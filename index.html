@@ -1,9 +1,367 @@
-<html>
-  
-  <h1>Hello World</h1>
-  
-  <a href="https://mesw.github.io/dice/deploy/Dice.html">Dice</a> is a small webassembly showcase project. </br>Link to <a href="https://github.com/mesw/dice"> Dice Repo</a>
-  </br>  
-  <a href="https://mesw.github.io/fantasycards/build/FantasyCards2.html">Fantasy Cards Prototype</a> is an attempt on a card game with AI generated art. (use full screen 1920x1080)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mesw — C++ & Qt Developer</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --border: #2a2d3e;
+      --accent: #5b8dee;
+      --accent2: #7c5cbf;
+      --text: #e2e4f0;
+      --muted: #7a7d94;
+      --tag-bg: #1f2235;
+    }
 
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 80px 24px 56px;
+    }
+
+    .hero-label {
+      display: inline-block;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: rgba(91, 141, 238, 0.1);
+      border: 1px solid rgba(91, 141, 238, 0.25);
+      border-radius: 20px;
+      padding: 4px 14px;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 520px;
+      margin-bottom: 32px;
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      font-size: 0.8rem;
+      padding: 4px 12px;
+      border-radius: 6px;
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    /* ── Section ── */
+    .section {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 24px 72px;
+    }
+
+    .section-title {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-title::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── Cards ── */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .card.featured {
+      border-color: rgba(91, 141, 238, 0.35);
+      background: linear-gradient(145deg, #1a1d27, #1c1e30);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .card-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 1.1rem;
+    }
+
+    .new-badge {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: rgba(91, 141, 238, 0.12);
+      border: 1px solid rgba(91, 141, 238, 0.3);
+      border-radius: 20px;
+      padding: 2px 10px;
+      white-space: nowrap;
+    }
+
+    .card h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .card p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      flex: 1;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .card-tag {
+      font-size: 0.72rem;
+      padding: 2px 9px;
+      border-radius: 5px;
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    .card-links {
+      display: flex;
+      gap: 10px;
+      padding-top: 4px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      padding: 7px 14px;
+      border-radius: 7px;
+      text-decoration: none;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #4a7de0;
+    }
+
+    .btn-ghost {
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--accent);
+      color: var(--text);
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 32px 24px;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    @media (max-width: 520px) {
+      .cards {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="hero-label">Portfolio</div>
+    <h1>Hi, I'm <span>mesw</span></h1>
+    <p>I build native desktop and real-time applications using C++ and Qt. This page collects my live demos and open-source work.</p>
+    <div class="hero-tags">
+      <span class="tag">C++</span>
+      <span class="tag">Qt / QML</span>
+      <span class="tag">WebAssembly</span>
+      <span class="tag">Real-time &amp; Networking</span>
+      <span class="tag">More coming soon</span>
+    </div>
+  </header>
+
+  <!-- Featured / New Projects -->
+  <main class="section">
+    <div class="section-title">Featured Projects</div>
+    <div class="cards">
+
+      <div class="card featured">
+        <div class="card-header">
+          <div class="card-icon">&#9654;</div>
+          <span class="new-badge">New</span>
+        </div>
+        <h3>Qt Multiplayer Demo</h3>
+        <p>A real-time multiplayer application built with C++ and Qt, demonstrating networked communication and Qt's event-driven architecture.</p>
+        <div class="card-tags">
+          <span class="card-tag">C++</span>
+          <span class="card-tag">Qt</span>
+          <span class="card-tag">Networking</span>
+          <span class="card-tag">Multiplayer</span>
+        </div>
+        <div class="card-links">
+          <a class="btn btn-primary" href="https://github.com/mesw/qtMultiplayerDemo" target="_blank">
+            &#10697; View on GitHub
+          </a>
+        </div>
+      </div>
+
+      <div class="card featured">
+        <div class="card-header">
+          <div class="card-icon">&#10003;</div>
+          <span class="new-badge">New</span>
+        </div>
+        <h3>Checklist</h3>
+        <p>A clean checklist application written in C++ and Qt, showcasing modern Qt UI patterns and application structure.</p>
+        <div class="card-tags">
+          <span class="card-tag">C++</span>
+          <span class="card-tag">Qt</span>
+          <span class="card-tag">Desktop App</span>
+        </div>
+        <div class="card-links">
+          <a class="btn btn-primary" href="https://github.com/mesw/checklist" target="_blank">
+            &#10697; View on GitHub
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Older / Live Demos -->
+  <div class="section">
+    <div class="section-title">Live Demos</div>
+    <div class="cards">
+
+      <div class="card">
+        <div class="card-icon" style="background: linear-gradient(135deg, #3a7bd5, #00d2ff);">&#9632;</div>
+        <h3>Dice</h3>
+        <p>A small WebAssembly showcase — C++ compiled to WASM and running directly in your browser. A proof-of-concept for cross-platform deployment.</p>
+        <div class="card-tags">
+          <span class="card-tag">C++</span>
+          <span class="card-tag">WebAssembly</span>
+          <span class="card-tag">Qt</span>
+        </div>
+        <div class="card-links">
+          <a class="btn btn-primary" href="https://mesw.github.io/dice/deploy/Dice.html" target="_blank">&#9654; Open Demo</a>
+          <a class="btn btn-ghost" href="https://github.com/mesw/dice" target="_blank">&#10697; Repo</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon" style="background: linear-gradient(135deg, #7c5cbf, #c471ed);">&#9670;</div>
+        <h3>Fantasy Cards Prototype</h3>
+        <p>An experimental card game prototype with AI-generated art. Best viewed in full screen at 1920×1080.</p>
+        <div class="card-tags">
+          <span class="card-tag">C++</span>
+          <span class="card-tag">Qt</span>
+          <span class="card-tag">WebAssembly</span>
+          <span class="card-tag">AI Art</span>
+        </div>
+        <div class="card-links">
+          <a class="btn btn-primary" href="https://mesw.github.io/fantasycards/build/FantasyCards2.html" target="_blank">&#9654; Open Demo</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <p>More projects on the way &mdash; <a href="https://github.com/mesw" target="_blank">github.com/mesw</a></p>
+  </footer>
+
+</body>
 </html>
