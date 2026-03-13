@@ -16,11 +16,7 @@
       --tag-bg: #1f2235;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       background: var(--bg);
@@ -91,7 +87,7 @@
     .section {
       max-width: 860px;
       margin: 0 auto;
-      padding: 0 24px 72px;
+      padding: 0 24px 64px;
     }
 
     .section-title {
@@ -159,17 +155,32 @@
       font-size: 1.1rem;
     }
 
-    .new-badge {
+    .badge {
       font-size: 0.65rem;
       font-weight: 600;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: var(--accent);
-      background: rgba(91, 141, 238, 0.12);
-      border: 1px solid rgba(91, 141, 238, 0.3);
       border-radius: 20px;
       padding: 2px 10px;
       white-space: nowrap;
+    }
+
+    .badge-blue {
+      color: var(--accent);
+      background: rgba(91, 141, 238, 0.12);
+      border: 1px solid rgba(91, 141, 238, 0.3);
+    }
+
+    .badge-gold {
+      color: #e8b84b;
+      background: rgba(232, 184, 75, 0.1);
+      border: 1px solid rgba(232, 184, 75, 0.28);
+    }
+
+    .badge-dim {
+      color: var(--muted);
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
     }
 
     .card h3 {
@@ -203,6 +214,7 @@
       display: flex;
       gap: 10px;
       padding-top: 4px;
+      flex-wrap: wrap;
     }
 
     .btn {
@@ -214,28 +226,55 @@
       padding: 7px 14px;
       border-radius: 7px;
       text-decoration: none;
-      transition: background 0.15s, color 0.15s;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
     }
 
     .btn-primary {
       background: var(--accent);
       color: #fff;
     }
-
-    .btn-primary:hover {
-      background: #4a7de0;
-    }
+    .btn-primary:hover { background: #4a7de0; }
 
     .btn-ghost {
       background: var(--tag-bg);
       border: 1px solid var(--border);
       color: var(--muted);
     }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--text); }
 
-    .btn-ghost:hover {
-      border-color: var(--accent);
-      color: var(--text);
+    /* ── Teaser card (full-width, coming soon) ── */
+    .card.teaser {
+      border-color: rgba(232, 184, 75, 0.28);
+      background: linear-gradient(145deg, #1a1d22, #1e1b2e);
+      grid-column: 1 / -1;
+      flex-direction: row;
+      align-items: center;
+      gap: 24px;
     }
+
+    .teaser-body {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .teaser-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #3a2060, #8b5fbf);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 1.6rem;
+    }
+
+    /* ── Dim section (early work) ── */
+    .section-dim .section-title { opacity: 0.6; }
+    .section-dim .card { opacity: 0.65; }
+    .section-dim .card:hover { opacity: 1; border-color: var(--border); transform: none; }
 
     /* ── Footer ── */
     footer {
@@ -245,16 +284,11 @@
       color: var(--muted);
       font-size: 0.82rem;
     }
-
-    footer a {
-      color: var(--accent);
-      text-decoration: none;
-    }
+    footer a { color: var(--accent); text-decoration: none; }
 
     @media (max-width: 520px) {
-      .cards {
-        grid-template-columns: 1fr;
-      }
+      .cards { grid-template-columns: 1fr; }
+      .card.teaser { flex-direction: column; }
     }
   </style>
 </head>
@@ -274,7 +308,7 @@
     </div>
   </header>
 
-  <!-- Featured / New Projects -->
+  <!-- Featured Projects -->
   <main class="section">
     <div class="section-title">Featured Projects</div>
     <div class="cards">
@@ -282,7 +316,7 @@
       <div class="card featured">
         <div class="card-header">
           <div class="card-icon">&#9654;</div>
-          <span class="new-badge">New</span>
+          <span class="badge badge-blue">New</span>
         </div>
         <h3>Qt Multiplayer Demo</h3>
         <p>A real-time multiplayer application built with C++ and Qt, demonstrating networked communication and Qt's event-driven architecture.</p>
@@ -293,43 +327,58 @@
           <span class="card-tag">Multiplayer</span>
         </div>
         <div class="card-links">
-          <a class="btn btn-primary" href="https://github.com/mesw/qtMultiplayerDemo" target="_blank">
-            &#10697; View on GitHub
-          </a>
+          <a class="btn btn-primary" href="https://mesw.github.io/qtMultiplayerDemo/" target="_blank">&#9654; Open Demo</a>
+          <a class="btn btn-ghost" href="https://github.com/mesw/qtMultiplayerDemo" target="_blank">&#10697; Repo</a>
         </div>
       </div>
 
       <div class="card featured">
         <div class="card-header">
           <div class="card-icon">&#10003;</div>
-          <span class="new-badge">New</span>
+          <span class="badge badge-blue">New</span>
         </div>
         <h3>Checklist</h3>
-        <p>A clean checklist application written in C++ and Qt, showcasing modern Qt UI patterns and application structure.</p>
+        <p>A clean checklist application written in C++ and Qt, showcasing modern Qt UI patterns and well-structured application architecture.</p>
         <div class="card-tags">
           <span class="card-tag">C++</span>
           <span class="card-tag">Qt</span>
           <span class="card-tag">Desktop App</span>
         </div>
         <div class="card-links">
-          <a class="btn btn-primary" href="https://github.com/mesw/checklist" target="_blank">
-            &#10697; View on GitHub
-          </a>
+          <a class="btn btn-primary" href="https://mesw.github.io/checklist/" target="_blank">&#9654; Open Demo</a>
+          <a class="btn btn-ghost" href="https://github.com/mesw/checklist" target="_blank">&#10697; Repo</a>
+        </div>
+      </div>
+
+      <!-- Planes of Fate teaser -->
+      <div class="card teaser">
+        <div class="teaser-icon">&#9992;</div>
+        <div class="teaser-body">
+          <div class="card-header">
+            <h3>Planes of Fate</h3>
+            <span class="badge badge-gold">Coming Soon</span>
+          </div>
+          <p>An ambitious game project currently in development. More details soon.</p>
+          <div class="card-tags">
+            <span class="card-tag">C++</span>
+            <span class="card-tag">Qt</span>
+            <span class="card-tag">Game Dev</span>
+          </div>
         </div>
       </div>
 
     </div>
   </main>
 
-  <!-- Older / Live Demos -->
+  <!-- Dice -->
   <div class="section">
-    <div class="section-title">Live Demos</div>
+    <div class="section-title">WebAssembly Showcase</div>
     <div class="cards">
 
       <div class="card">
         <div class="card-icon" style="background: linear-gradient(135deg, #3a7bd5, #00d2ff);">&#9632;</div>
         <h3>Dice</h3>
-        <p>A small WebAssembly showcase — C++ compiled to WASM and running directly in your browser. A proof-of-concept for cross-platform deployment.</p>
+        <p>C++ compiled to WebAssembly and running directly in your browser — a proof-of-concept for cross-platform Qt deployment without installing anything.</p>
         <div class="card-tags">
           <span class="card-tag">C++</span>
           <span class="card-tag">WebAssembly</span>
@@ -341,18 +390,28 @@
         </div>
       </div>
 
+    </div>
+  </div>
+
+  <!-- Early Work (dimmed) -->
+  <div class="section section-dim">
+    <div class="section-title">Early Steps</div>
+    <div class="cards">
+
       <div class="card">
-        <div class="card-icon" style="background: linear-gradient(135deg, #7c5cbf, #c471ed);">&#9670;</div>
-        <h3>Fantasy Cards Prototype</h3>
-        <p>An experimental card game prototype with AI-generated art. Best viewed in full screen at 1920×1080.</p>
+        <div class="card-header">
+          <div class="card-icon" style="background: linear-gradient(135deg, #4a3060, #7c5cbf);">&#9670;</div>
+          <span class="badge badge-dim">Prototype</span>
+        </div>
+        <h3>Fantasy Cards</h3>
+        <p>An early experiment — a card game prototype with AI-generated art. Rough around the edges, but it runs. Best viewed at 1920×1080 full screen.</p>
         <div class="card-tags">
           <span class="card-tag">C++</span>
           <span class="card-tag">Qt</span>
           <span class="card-tag">WebAssembly</span>
-          <span class="card-tag">AI Art</span>
         </div>
         <div class="card-links">
-          <a class="btn btn-primary" href="https://mesw.github.io/fantasycards/build/FantasyCards2.html" target="_blank">&#9654; Open Demo</a>
+          <a class="btn btn-ghost" href="https://mesw.github.io/fantasycards/build/FantasyCards2.html" target="_blank">&#9654; Open Demo</a>
         </div>
       </div>
 
